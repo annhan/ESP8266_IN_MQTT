@@ -207,6 +207,7 @@ struct WiFiConfStruct {
   char sta_mqtt_user[64];
   char sta_mqtt_pass[64];
   char sta_mqtt_topic[64];
+  char sta_DHCP[4];
   char module_id[32];
 } WiFiConf = {
   WIFI_CONF_FORMAT,
@@ -447,34 +448,40 @@ void loop() {
   if(digitalRead(IN1)==0){if (gui==1){delay(50);if(digitalRead(IN1)==0){
     Serial.println("IN1");
     gui=0;
+    thoigian_gio=0;
     send_MQTT_IN();
    // goidt();gui=1;digitalWrite(OUT3,HIGH); String tinnhan="Alarm 1 OPEN";send_SMS(tinnhan);}
   }}}
   else if(digitalRead(IN1)==1){if (gui==0){delay(50);if(digitalRead(IN1)==1){
   Serial.println("IN1=1");
     gui=1;
+    thoigian_gio=0;
     send_MQTT_IN();
   }}}
   if(digitalRead(IN2)==0){if (gui2==1){delay(50);if(digitalRead(IN2)==0){
     Serial.println("IN2");
     gui2=0;
+    thoigian_gio=0;
     send_MQTT_IN();
     //goidt();gui1=1;digitalWrite(OUT3,HIGH);String tinnhan="Alarm 2 OPEN";send_SMS(tinnhan);
     }}}  
   else if(digitalRead(IN2)==1){if (gui2==0){delay(50);if(digitalRead(IN2)==1){
     Serial.println("IN2=1");
     gui2=1;
+    thoigian_gio=0;
     send_MQTT_IN();
     }}}
   if(digitalRead(IN3)==0){if (gui1==1){delay(50);if(digitalRead(IN3)==0){
     Serial.println("IN3");
     gui1=0;
+    thoigian_gio=0;
     send_MQTT_IN();
     //goidt();digitalWrite(OUT3,HIGH);String tinnhan="Alarm 3 OPEN";send_SMS(tinnhan);
     }}}
   else if(digitalRead(IN3)==1){if (gui1==0){delay(50);if(digitalRead(IN3)==1){
     Serial.println("IN3=1");
     gui1=1;
+    thoigian_gio=0;
     send_MQTT_IN();
     }}} 
  // Serial.println("TEST");

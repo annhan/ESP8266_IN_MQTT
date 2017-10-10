@@ -201,6 +201,25 @@ void setupWiFiConf(void) {
     content1 += F(" )</p>");
     content1 += F("<p>");
      content1 += F("</p><form method='get' action='set_wifi_conf'>");
+     
+  content1 += F("<div class=\"row\">");
+    content1 += "<li><select name='button' class=\"dropbtn\" >";
+    String id_check="";
+    
+    for (int i = 0; i < 2; i++) {
+      switch (i) {
+        case 0:  id_check = "DHCP";break;
+        case 1:  id_check = "Static IP";break;
+      }
+      if (atoi(WiFiConf.sta_DHCP) != i)
+      content1 += "<option value=\"" + String(i) + "\">" +  id_check + "</option>";
+      else
+      content1 += "<option value=\"" + String(i) + "\" selected>" +  id_check + "</option>";
+    }
+    content1 += "</select>";
+    content1 += F("</div>");
+
+    
     content1 += F("<li><label for='ssid' class=\"req\">SSID : </label><input name='ssid' class=\"txt\" id='ssid' maxlength=32 value=") ;
     content1 += String(WiFiConf.sta_ssid) ;
     content1 +=  F(" ><br /><br />");
@@ -458,6 +477,9 @@ server.on("/set_noidung", []() {
   });
 //////////////
   server.on("/set_wifi_conf", []() {
+    String data1 = server.arg(F("button"));
+    data1.toCharArray(WiFiConf.sta_DHCP, sizeof(WiFiConf.sta_DHCP));
+    Serial.println(WiFiConf.sta_DHCP);
     String new_ssid = server.arg("ssid");
     String new_pwd = server.arg("pwd");
     String new_ip = server.arg("ip");
