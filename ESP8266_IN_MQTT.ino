@@ -304,6 +304,13 @@ void setup() {
   clientmqtt.setServer(WiFiConf.sta_mqtt_address, WiFiConf.sta_mqtt_port);
   clientmqtt.setCallback(callback);
   lastReconnectAttempt = 0;
+  gui = (digitalRead(IN1)==0)?0:1 ;
+  gui1 = (digitalRead(IN3)==0)?0:1 ;
+  gui2 = (digitalRead(IN2)==0)?0:1 ;
+  Serial.println(gui);
+  Serial.println(gui1);
+  Serial.println(gui2);
+  send_MQTT_IN();
 }
 void loop() {
 
@@ -437,41 +444,41 @@ void loop() {
         boolean tieptuc_sms=sosanh_cambien(k);
         if (tieptuc_sms){delay(5000);}
   }*/
-  if(digitalRead(IN1)==0){if (gui==0){delay(50);if(digitalRead(IN1)==0){
+  if(digitalRead(IN1)==0){if (gui==1){delay(50);if(digitalRead(IN1)==0){
     Serial.println("IN1");
-    gui=1;
+    gui=0;
     send_MQTT_IN();
    // goidt();gui=1;digitalWrite(OUT3,HIGH); String tinnhan="Alarm 1 OPEN";send_SMS(tinnhan);}
   }}}
-  else if(digitalRead(IN1)==1){if (gui==1){delay(50);if(digitalRead(IN1)==1){
+  else if(digitalRead(IN1)==1){if (gui==0){delay(50);if(digitalRead(IN1)==1){
   Serial.println("IN1=1");
-    gui=0;
+    gui=1;
     send_MQTT_IN();
   }}}
-  if(digitalRead(IN2)==0){if (gui1==0){delay(50);if(digitalRead(IN2)==0){
+  if(digitalRead(IN2)==0){if (gui2==1){delay(50);if(digitalRead(IN2)==0){
     Serial.println("IN2");
-    gui1=1;
+    gui2=0;
     send_MQTT_IN();
     //goidt();gui1=1;digitalWrite(OUT3,HIGH);String tinnhan="Alarm 2 OPEN";send_SMS(tinnhan);
     }}}  
-  else if(digitalRead(IN2)==1){if (gui1==1){delay(50);if(digitalRead(IN2)==1){
+  else if(digitalRead(IN2)==1){if (gui2==0){delay(50);if(digitalRead(IN2)==1){
     Serial.println("IN2=1");
-    gui1=0;
+    gui2=1;
     send_MQTT_IN();
     }}}
-  if(digitalRead(IN3)==0){if (gui2==0){delay(50);if(digitalRead(IN3)==0){
+  if(digitalRead(IN3)==0){if (gui1==1){delay(50);if(digitalRead(IN3)==0){
     Serial.println("IN3");
-    gui2=1;
+    gui1=0;
     send_MQTT_IN();
     //goidt();digitalWrite(OUT3,HIGH);String tinnhan="Alarm 3 OPEN";send_SMS(tinnhan);
     }}}
-  else if(digitalRead(IN3)==1){if (gui2==1){delay(50);if(digitalRead(IN3)==1){
+  else if(digitalRead(IN3)==1){if (gui1==0){delay(50);if(digitalRead(IN3)==1){
     Serial.println("IN3=1");
-    gui2=0;
+    gui1=1;
     send_MQTT_IN();
     }}} 
  // Serial.println("TEST");
-  if ( (unsigned long) (millis() - timer_gio) > 10000 ){
+  if ( (unsigned long) (millis() - timer_gio) > 1000 ){
                          /* if (thoigian_gio % 2 ==0){
                                 if (statusmang==1){
                                 String trave="{";
@@ -498,9 +505,9 @@ void loop() {
                                 }
                           }*/
                           timer_gio = millis();
-                         /* thoigian_gio++;
-                          if (thoigian_gio > 2160){ thoigian_gio=0;guitinnhan=3;}
-                          Serial.println("AT");
+                          thoigian_gio++;
+                          if (thoigian_gio > 20){ thoigian_gio=0;send_MQTT_IN();}
+                          /*Serial.println("AT");
                           if (da_kttk){ if (sotien<15000 && sotien>1000){da_kttk=false; noidung="Chu y : So TK con "; noidung = noidung + String(sotien);noidung = noidung + "d. De nap soan cu phap NAP:mathe. gui den sdt nay";guitinnhan=1;}};    */                      
   }
 }
